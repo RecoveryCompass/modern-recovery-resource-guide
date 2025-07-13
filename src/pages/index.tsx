@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import ResourceFilterPanel from "../components/ResourceFilterPanel";
-import Map from "../components/Map";
+// import Map from "../components/Map"; // Commented out Map import
 import ResourceList from "../components/ResourceList";
 
 // Dummy data for demonstration; replace with real data fetching
@@ -25,7 +25,7 @@ const ALL_RESOURCES = [
     city: "Springfield",
     county: "Greene",
     latitude: 37.2163,
-    longitude: -93.2920,
+    longitude: -93.292,
     hours: "Mon-Fri 9am-5pm",
     contact: "555-5678",
     distance: "0.7 mi",
@@ -76,8 +76,9 @@ export default function Home() {
       <main className="flex flex-col md:flex-row p-6 gap-6 min-h-screen bg-gray-100">
         <ResourceFilterPanel selectedTypes={selectedTypes} onChange={handleFilterChange} />
         <div className="flex-1 flex flex-col">
-          <div className="h-96 mb-6">
-            <Map resources={filteredResources} userLocation={userLocation} />
+          <div className="h-96 mb-6 flex items-center justify-center bg-gray-200 text-gray-600">
+            {/* Placeholder instead of Map */}
+            Map is temporarily disabled
           </div>
           <ResourceList resources={filteredResources} />
         </div>
