@@ -1,7 +1,13 @@
-<div className="flex-1 flex flex-col">
-  <div className="h-96 mb-6 bg-gray-100 flex items-center justify-center text-gray-500">
-    Map temporarily removed
-  </div>
-  <ResourceList resources={filteredResources} />
-</div>
+// src/components/Map.tsx (or wherever your Map component lives)
 
+import React from 'react';
+
+const Map = () => {
+  return (
+    <div style={{ width: '100%', height: '400px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888' }}>
+      Map is temporarily disabled
+    </div>
+  );
+};
+
+export default Map;
