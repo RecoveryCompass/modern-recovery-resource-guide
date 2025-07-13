@@ -1,58 +1,40 @@
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import React, { useRef, useEffect } from 'react';
+import mapboxgl from 'mapbox-gl';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
+// Make sure to replace this with your Mapbox token or use env variables
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
 
-interface Resource {
-  id: string;
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-}
-
-interface Props {
-  resources: Resource[];
-  userLocation: { lat: number; lng: number } | null;
-}
-
-export default function Map({ resources, userLocation }: Props) {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<mapboxgl.Map | null>(null);
+const Map = () => {
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const map = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
-    if (!mapContainer.current || !userLocation) return;
+    if (map.current) return; // initialize map only once
 
-    if (!mapRef.current) {
-      mapRef.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/standard",
-        center: [userLocation.lng, userLocation.lat],
-        zoom: 12,
-      });
-
-      mapRef.current.addControl(new mapboxgl.NavigationControl());
-    } else {
-      mapRef.current.setCenter([userLocation.lng, userLocation.lat]);
-    }
-
-    // Remove existing markers
-    document.querySelectorAll(".mapboxgl-marker").forEach((el) => el.remove());
-
-    // Add resource pins
-    resources.forEach((resource) => {
-      new mapboxgl.Marker({ color: "#2563eb" })
-        .setLngLat([resource.longitude, resource.latitude])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }).setHTML(
-            `<strong>${resource.name}</strong><br/>${resource.type}`
-          )
-        )
-        .addTo(mapRef.current!);
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current as HTMLElement,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-93.2923, 37.20896], // example: Springfield, MO coordinates
+      zoom: 12,
     });
-  }, [resources, userLocation]);
+
+    // Add navigation controls (zoom buttons)
+    map.current.addControl(new mapboxgl.NavigationControl());
+    
+    // Example marker
+    new mapboxgl.Marker()
+      .setLngLat([-93.2923, 37.20896])
+      .setPopup(new mapboxgl.Popup().setHTML('<h4>Hope Shelter</h4><p>Shelter</p>'))
+      .addTo(map.current);
+
+  }, []);
 
   return (
-    <div ref={mapContainer} className="w-full h-full rounded shadow" style={{ minHeight: 384 }} />
+    <div
+      ref={mapContainer}
+      style={{ width: '100%', height: '400px', borderRadius: '8px', marginTop: '1rem' }}
+    />
   );
-}
+};
+
+export default Map;
