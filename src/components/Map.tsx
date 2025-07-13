@@ -1,40 +1,26 @@
 import React, { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-// Make sure to replace this with your Mapbox token or use env variables
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || '';
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY!;
 
 const Map = () => {
-  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
 
+    if (!mapContainer.current) return;
+
     map.current = new mapboxgl.Map({
-      container: mapContainer.current as HTMLElement,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-93.2923, 37.20896], // example: Springfield, MO coordinates
-      zoom: 12,
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-77.0369, 38.9072], // Washington, DC coords as example
+      zoom: 10,
     });
-
-    // Add navigation controls (zoom buttons)
-    map.current.addControl(new mapboxgl.NavigationControl());
-    
-    // Example marker
-    new mapboxgl.Marker()
-      .setLngLat([-93.2923, 37.20896])
-      .setPopup(new mapboxgl.Popup().setHTML('<h4>Hope Shelter</h4><p>Shelter</p>'))
-      .addTo(map.current);
-
   }, []);
 
-  return (
-    <div
-      ref={mapContainer}
-      style={{ width: '100%', height: '400px', borderRadius: '8px', marginTop: '1rem' }}
-    />
-  );
+  return <div ref={mapContainer} style={{ width: '100%', height: '400px' }} />;
 };
 
 export default Map;
